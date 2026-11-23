@@ -44,7 +44,7 @@ class Params:
     motor_lag = 0.02  # s, motor takes time to reach the commanded force
     cart_friction = 0.5  # N per (m/s)
     pivot_friction = 0.002  # N*m per (rad/s)
-    rail_half_lenght = 1.0  # m, the cart hits the walls here.
+    rail_half_length = 1.0  # m, the cart hits the walls here.
     wall_restitution = 0.3  # 0 = cart stops dead, 1 = perfect elastic bounce
 
 
@@ -163,6 +163,9 @@ class CartPole:
             pos += self._rng.gauss(0, self.position_noise)
         return Sensors(self.time, ang, pos)
 
+    def true_state(self) -> tuple[float, float, float, float, float]:
+        return astuple(self._state)
+
     def set_motor(self, command: float):
         """Set the motor command, clipped to [-1, 1]."""
         self._command = max(-1.0, min(1.0, command))
@@ -254,7 +257,7 @@ class CartPole:
         old = self._state
         new = self._rk4(old, h)
 
-        limit = self.params.rail_half_lenght
+        limit = self.params.rail_half_length
         if abs(new.position) > limit:
             self.hit_wall = True
             side = math.copysign(1, new.position)
