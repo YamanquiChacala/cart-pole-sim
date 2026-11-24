@@ -149,9 +149,9 @@ def _animate(
 
     def on_key(event: KeyEvent) -> None:
         if event.key == "left":
-            sim.nudge(-1.5)
+            sim.nudge(-0.5)
         elif event.key == "right":
-            sim.nudge(1.5)
+            sim.nudge(0.5)
 
     fig.canvas.mpl_connect("key_press_event", on_key)
 
